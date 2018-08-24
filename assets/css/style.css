@@ -1,0 +1,10 @@
+#theWord {
+    font-family: 'Nova Mono', monospace;
+    font-size: 80px;
+    letter-spacing: 10px;
+}
+
+#wrongGuesses {
+    font-size: 25px;
+    letter-spacing: 3px;
+}
