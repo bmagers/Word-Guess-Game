@@ -1,54 +1,38 @@
-
-
-// Use Cases:
-
-// Use #1: The user loads the page
-    // display "Press any key to start"
-    // underscores of word
-    // # of guesses used, remaining
-    // wins, losses, etc.
-
-// Use #2: user clicks a letter
-    // if user guesses a letter that's in the word, display letter in its position
-    // otherwise, use up guess
-    // if guesses remaining = 0, user loses, increase losses by 1
-    // if user guesses all letters, increase wins by 1
-
-// variables, then functions, then event listeners
-
 // ===== VARIABLES =====
 
 var wordsToUse = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND"]
 var usedWords = [];
 var currentWord;
-var displayWord = "";
+var displayWord;
 var userInput;
-var guessesRemaining = 10;
 var wrongGuesses = [];
 var rightGuesses = [];
+var guessesRemaining;
 var wins = 0;
 var losses = 0;
-var underscores = [];  // ?
+var gameOver = false;
 
 // ===== FUNCTIONS =====
 
 function reset() {
+    gameOver = false;
     guessesRemaining = 10;
-    // randomly choose word
     currentWord = wordsToUse[Math.floor(Math.random() * (wordsToUse.length - 1))];
-    // fine length of word, display underscores
+    displayWord = "";
+    rightGuesses = [];
+    wrongGuesses = [];
+    guessesRemaining = 10;
     for (var letters = 0; letters < currentWord.length; letters++)
     {
-        underscores += "_";
-        document.getElementById("theWord").innerHTML += "_ ";
         displayWord += "_";
     }
-    // display underscores
-    document.getElementById("theWord").innerHTML = displayWord;
     console.log("currentWord: " + currentWord);
-    document.getElementById("win").hidden = true;
+    document.getElementById("theWord").innerHTML = displayWord;
+    document.getElementById("wrongGuesses").innerHTML = "";
+    document.getElementById("guessesRemaining").innerHTML = "";
+    document.getElementById("gameOver").innerHTML = "";
+    document.getElementById("score").innerHTML = "<p>Wins: " + wins + "<br>Losses: " + losses + "</p>";
 }
-
 
 // ===== EVENT LISTENERS =====
 
@@ -59,37 +43,66 @@ window.onload = function() {
 document.onkeyup = function(event) {
     userInput = event.key.toUpperCase();
 
-    if (/^[a-zA-Z]+$/.test(userInput) && userInput.length == 1 && !(wrongGuesses.includes(userInput) || rightGuesses.includes(userInput))) {
-        var letterPosition = currentWord.indexOf(userInput);
-        if (letterPosition === -1) {
-            // wrong guess
-            guessesRemaining--;
-            wrongGuesses.push(userInput);
-        } else {
-            // right guess
-            rightGuesses.push(userInput);
-
-            // loop through word and update displayWord with letters
-            displayWord = "";
-            var win = true;
-            for (var i = 0; i < currentWord.length; i++) {
-                var letter = currentWord.charAt(i);
-                if (rightGuesses.includes(letter)) {
-                    displayWord += letter;
-                } else {
-                    displayWord += "_";
-                    win = false;
+    if (gameOver) {
+        reset();
+    } else {
+        if (userInput.length == 1 && /^[A-Z]+$/.test(userInput) && !(wrongGuesses.includes(userInput) || rightGuesses.includes(userInput))) {
+            var letterPosition = currentWord.indexOf(userInput);
+            if (letterPosition === -1) {
+                // wrong guess
+                wrongGuesses.push(userInput);
+                guessesRemaining--;
+                document.getElementById("wrongGuesses").innerHTML = "Wrong guesses: " + wrongGuesses;
+                document.getElementById("guessesRemaining").innerHTML = "Guesses remaining: " + guessesRemaining;
+                // check for loss
+                if (guessesRemaining === 0) {
+                    document.getElementById("gameOver").innerHTML = "<h2>You lost.</h2><p>Press any key to play again.</p>";
+                    losses++;
+                    gameOver = true;
+                    // loop through word to display un-guessed letters
+                    displayWord = "";
+                    for (var i = 0; i < currentWord.length; i++) {
+                        var letter = currentWord.charAt(i);
+                        if (rightGuesses.includes(letter)) {
+                            displayWord += letter;
+                        } else {
+                            displayWord += "<span class='fail'>" + letter + "</span>";
+                        }
+                    }
+                    document.getElementById("theWord").innerHTML = displayWord;
                 }
-            }
-            document.getElementById("theWord").innerHTML = displayWord;
-            if (win) {
-                document.getElementById("win").hidden = false;
-            }
+            } else {
+                // right guess
+                rightGuesses.push(userInput);
+                // loop through word and update display with guessed letters
+                displayWord = "";
+                var win = true;
+                for (var i = 0; i < currentWord.length; i++) {
+                    var letter = currentWord.charAt(i);
+                    if (rightGuesses.includes(letter)) {
+                        displayWord += letter;
+                    } else {
+                        displayWord += "_";
+                        win = false;
+                    }
+                }
+                document.getElementById("theWord").innerHTML = displayWord;
+                // check for win
+                if (win) {
+                    document.getElementById("gameOver").innerHTML = "<h2>You won!</h2><p>Press any key to play again.</p>";
+                    usedWords.push(currentWord);
+                    var i = wordsToUse.indexOf(currentWord);
+                    if (i !== -1) {
+                        wordsToUse.splice(i, 1);
+                    }
+                    if (wordsToUse.length == 0) {
+                        wordsToUse = usedWords;
+                        usedWords = [];
+                    }
+                    wins++;
+                    gameOver = true;
+                }
+            }       
         }
-    
-        document.getElementById("guessesRemaining").innerHTML = "Guesses remaining: " + guessesRemaining;
-    
-        document.getElementById("wrongGuesses").innerHTML = "Wrong guesses: " + wrongGuesses;
     }
-
 }
