@@ -69,6 +69,8 @@ document.onkeyup = function(event) {
                     document.getElementById("theWord").innerHTML = displayWord;
                     document.getElementById("message").innerHTML = "PRESS ANY KEY TO PLAY AGAIN";
                     losses++;
+                    var audioLoss = new Audio('https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg');
+                    audioLoss.play();
                     document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
                     gameOver = true;
                 }
@@ -101,6 +103,8 @@ document.onkeyup = function(event) {
                         usedWords = [];
                     }
                     wins++;
+                    var audioWin = new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg');
+                    audioWin.play();
                     // add pin to map
                     var mapKey = mapKeys.findIndex(function(element) {
                         return element === currentWord;
