@@ -1,6 +1,9 @@
 // ===== VARIABLES =====
 
 var wordsToUse = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND", "OAKLAND", "TAMPA", "ORLANDO", "PITTSBURGH", "SACRAMENTO", "CINCINNATI", "CLEVELAND", "RALEIGH", "MILWAUKEE", "NASHVILLE", "AUSTIN", "INDIANAPOLIS", "ALBUQUERQUE"];
+var mapKeys = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND", "OAKLAND", "TAMPA", "ORLANDO", "PITTSBURGH", "SACRAMENTO", "CINCINNATI", "CLEVELAND", "RALEIGH", "MILWAUKEE", "NASHVILLE", "AUSTIN", "INDIANAPOLIS", "ALBUQUERQUE"];
+var mapLats = [41.8781, 32.7767, 29.7604, 25.7617, 39.9526, 33.7490, 42.3601, 33.4484, 42.3314, 47.6062, 44.9778, 39.7392, 39.2904, 35.2271, 45.5122, 37.8044, 27.9506, 28.5383, 40.4406, 38.5816, 39.1031, 41.4993, 35.7796, 43.0389, 36.1627, 30.2672, 39.7684, 35.0844];
+var mapLongs = [-87.6928, -96.7970, -95.3698, -80.1918, -75.1652, -84.3880, -71.9589, -112.0740, -83.0458, -122.3321, -93.2650, -104.9903, -76.6122, -80.8431, -122.6587, -122.2711, -82.4572, -81.3792, -79.9959, -121.4944, -84.5120, -81.6944, -78.6382, -87.9065, -86.7816, -97.7431, -86.1581, -106.6504];
 var usedWords = [];
 var currentWord;
 var displayWord;
@@ -27,10 +30,9 @@ function reset() {
     }
     console.log("currentWord: " + currentWord);
     document.getElementById("theWord").innerHTML = displayWord;
-    document.getElementById("wrongGuesses").innerHTML = "";
-    document.getElementById("guessesRemaining").innerHTML = "Guesses remaining: " + guessesRemaining;
+    document.getElementById("message").innerHTML = "GUESSES: " + wrongGuesses + "&nbsp;&nbsp;&nbsp;" + guessesRemaining + " REMAINING";
     document.getElementById("gameOver").innerHTML = "";
-    document.getElementById("score").innerHTML = "<p>Wins: " + wins + "<br>Losses: " + losses + "</p>";
+    document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
 }
 
 // ===== EVENT LISTENERS =====
@@ -51,8 +53,7 @@ document.onkeyup = function(event) {
                 // wrong guess
                 wrongGuesses.push(userInput);
                 guessesRemaining--;
-                document.getElementById("wrongGuesses").innerHTML = "Wrong guesses: " + wrongGuesses;
-                document.getElementById("guessesRemaining").innerHTML = "Guesses remaining: " + guessesRemaining;
+                document.getElementById("message").innerHTML = "GUESSES: " + wrongGuesses + "&nbsp;&nbsp;&nbsp;" + guessesRemaining + " REMAINING";
                 // check for loss
                 if (guessesRemaining === 0) {
                     // loop through word to display un-guessed letters
@@ -66,8 +67,9 @@ document.onkeyup = function(event) {
                         }
                     }
                     document.getElementById("theWord").innerHTML = displayWord;
-                    document.getElementById("gameOver").innerHTML = "<h2>You lost.</h2><p>Press any key to play again.</p>";
+                    document.getElementById("message").innerHTML = "PRESS ANY KEY TO PLAY AGAIN";
                     losses++;
+                    document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
                     gameOver = true;
                 }
             } else {
@@ -88,7 +90,7 @@ document.onkeyup = function(event) {
                 document.getElementById("theWord").innerHTML = displayWord;
                 // check for win
                 if (win) {
-                    document.getElementById("gameOver").innerHTML = "<h2>You won!</h2><p>Press any key to play again.</p>";
+                    document.getElementById("message").innerHTML = "PRESS ANY KEY TO PLAY AGAIN";
                     usedWords.push(currentWord);
                     var i = wordsToUse.indexOf(currentWord);
                     if (i !== -1) {
@@ -99,6 +101,20 @@ document.onkeyup = function(event) {
                         usedWords = [];
                     }
                     wins++;
+                    // add pin to map
+                    var mapKey = mapKeys.findIndex(function(element) {
+                        return element === currentWord;
+                    });
+                    var coordinates = {
+                        lat: parseFloat(mapLats[mapKey]),
+                        lng: parseFloat(mapLongs[mapKey])
+                    }
+                    var marker = new google.maps.Marker({
+                        position: coordinates,
+                        map: map,
+                        animation: google.maps.Animation.DROP
+                    })
+                    document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
                     gameOver = true;
                 }
             }       

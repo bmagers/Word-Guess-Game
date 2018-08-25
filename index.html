@@ -2,35 +2,27 @@
 <html lang="en">
   <head>
     <title>Guess the City</title>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text|Nova+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Crimson+Text|Nova+Mono">
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
   <body>
     <div id="map"></div>
 
     <div id="main">
-      <h1>Guess the City</h1>
+      <p>GUESS THE CITY</p>
       <h2 id="theWord"></h2>
-
-    <div>
-      <h2 id="wrongGuesses"></h2>
-      <h2 id="guessesRemaining"></h2>
-    </div>
-    <div id="gameOver"></div>
-    <div id="score"></div>
+    <div id="message"></div>
   </div>
+  <div id="score"></div>
 
     <script>
       var map;
       function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 39, lng: -95},
+          center: {lat: 43, lng: -95},
           zoom: 4,
           mapTypeId: google.maps.MapTypeId.SATELLITE,
           mapTypeControl: false,
@@ -42,16 +34,7 @@
         });
       }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_6P5m_LHsNxVFqRcQgNfCoWp4a4WMW88&callback=initMap"
-    async defer></script>
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_6P5m_LHsNxVFqRcQgNfCoWp4a4WMW88&callback=initMap" async defer></script>
     <script src="assets/javascript/game.js"></script>
   </body>
 </html>
