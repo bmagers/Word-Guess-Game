@@ -1,6 +1,6 @@
 // ===== VARIABLES =====
 
-var wordsToUse = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND"]
+var wordsToUse = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND", "OAKLAND", "TAMPA", "ORLANDO", "PITTSBURGH", "SACRAMENTO", "CINCINNATI", "CLEVELAND", "RALEIGH", "MILWAUKEE", "NASHVILLE", "AUSTIN", "INDIANAPOLIS", "ALBUQUERQUE"];
 var usedWords = [];
 var currentWord;
 var displayWord;
@@ -16,12 +16,11 @@ var gameOver = false;
 
 function reset() {
     gameOver = false;
-    guessesRemaining = 10;
     currentWord = wordsToUse[Math.floor(Math.random() * (wordsToUse.length - 1))];
     displayWord = "";
     rightGuesses = [];
     wrongGuesses = [];
-    guessesRemaining = 10;
+    guessesRemaining = 8;
     for (var letters = 0; letters < currentWord.length; letters++)
     {
         displayWord += "_";
@@ -29,7 +28,7 @@ function reset() {
     console.log("currentWord: " + currentWord);
     document.getElementById("theWord").innerHTML = displayWord;
     document.getElementById("wrongGuesses").innerHTML = "";
-    document.getElementById("guessesRemaining").innerHTML = "";
+    document.getElementById("guessesRemaining").innerHTML = "Guesses remaining: " + guessesRemaining;
     document.getElementById("gameOver").innerHTML = "";
     document.getElementById("score").innerHTML = "<p>Wins: " + wins + "<br>Losses: " + losses + "</p>";
 }
@@ -56,9 +55,6 @@ document.onkeyup = function(event) {
                 document.getElementById("guessesRemaining").innerHTML = "Guesses remaining: " + guessesRemaining;
                 // check for loss
                 if (guessesRemaining === 0) {
-                    document.getElementById("gameOver").innerHTML = "<h2>You lost.</h2><p>Press any key to play again.</p>";
-                    losses++;
-                    gameOver = true;
                     // loop through word to display un-guessed letters
                     displayWord = "";
                     for (var i = 0; i < currentWord.length; i++) {
@@ -70,6 +66,9 @@ document.onkeyup = function(event) {
                         }
                     }
                     document.getElementById("theWord").innerHTML = displayWord;
+                    document.getElementById("gameOver").innerHTML = "<h2>You lost.</h2><p>Press any key to play again.</p>";
+                    losses++;
+                    gameOver = true;
                 }
             } else {
                 // right guess
