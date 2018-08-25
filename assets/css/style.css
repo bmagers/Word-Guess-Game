@@ -5,19 +5,14 @@ html, body {
     letter-spacing: 2px; 
 }
 
-h1, h2 {
-    font-size: 25px;
-    letter-spacing: 2px; 
-}
-
 #map {
     height: 100%;
 }
 
 #main {
     position: absolute;
-    margin: 0 auto;
     top: 0;
+    margin: 0 auto;
     text-align: center;
     width: 100%;
     z-index: 100;
@@ -40,7 +35,6 @@ h1, h2 {
     font-size: 80px;
     letter-spacing: 10px;
 }
-
 
 .fail {
     color: grey;

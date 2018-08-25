@@ -1,4 +1,4 @@
-// ===== VARIABLES =====
+// ===== GLOBAL VARIABLES =====
 
 var wordsToUse = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND", "OAKLAND", "TAMPA", "ORLANDO", "PITTSBURGH", "SACRAMENTO", "CINCINNATI", "CLEVELAND", "RALEIGH", "MILWAUKEE", "NASHVILLE", "AUSTIN", "INDIANAPOLIS", "ALBUQUERQUE"];
 var mapKeys = ["CHICAGO", "DALLAS", "HOUSTON", "MIAMI", "PHILADELPHIA", "ATLANTA", "BOSTON", "PHOENIX", "DETROIT", "SEATTLE", "MINNEAPOLIS", "DENVER", "BALTIMORE", "CHARLOTTE", "PORTLAND", "OAKLAND", "TAMPA", "ORLANDO", "PITTSBURGH", "SACRAMENTO", "CINCINNATI", "CLEVELAND", "RALEIGH", "MILWAUKEE", "NASHVILLE", "AUSTIN", "INDIANAPOLIS", "ALBUQUERQUE"];
@@ -13,7 +13,7 @@ var rightGuesses = [];
 var guessesRemaining;
 var wins = 0;
 var losses = 0;
-var gameOver = false;
+var gameOver;
 
 // ===== FUNCTIONS =====
 
@@ -24,14 +24,11 @@ function reset() {
     rightGuesses = [];
     wrongGuesses = [];
     guessesRemaining = 8;
-    for (var letters = 0; letters < currentWord.length; letters++)
-    {
+    for (var letters = 0; letters < currentWord.length; letters++) {
         displayWord += "_";
     }
-    console.log("currentWord: " + currentWord);
     document.getElementById("theWord").innerHTML = displayWord;
     document.getElementById("message").innerHTML = "GUESSES: " + wrongGuesses + "&nbsp;&nbsp;&nbsp;" + guessesRemaining + " REMAINING";
-    document.getElementById("gameOver").innerHTML = "";
     document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
 }
 
@@ -69,7 +66,7 @@ document.onkeyup = function(event) {
                     document.getElementById("theWord").innerHTML = displayWord;
                     document.getElementById("message").innerHTML = "PRESS ANY KEY TO PLAY AGAIN";
                     losses++;
-                    var audioLoss = new Audio('https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg');
+                    var audioLoss = new Audio("https://actions.google.com/sounds/v1/cartoon/concussive_hit_guitar_boing.ogg");
                     audioLoss.play();
                     document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
                     gameOver = true;
@@ -92,7 +89,7 @@ document.onkeyup = function(event) {
                 document.getElementById("theWord").innerHTML = displayWord;
                 // check for win
                 if (win) {
-                    document.getElementById("message").innerHTML = "PRESS ANY KEY TO PLAY AGAIN";
+                    document.getElementById("message").innerHTML = "PRESS ANY KEY TO CONTINUE";
                     usedWords.push(currentWord);
                     var i = wordsToUse.indexOf(currentWord);
                     if (i !== -1) {
@@ -103,7 +100,7 @@ document.onkeyup = function(event) {
                         usedWords = [];
                     }
                     wins++;
-                    var audioWin = new Audio('https://actions.google.com/sounds/v1/cartoon/pop.ogg');
+                    var audioWin = new Audio("https://actions.google.com/sounds/v1/cartoon/pop.ogg");
                     audioWin.play();
                     // add pin to map
                     var mapKey = mapKeys.findIndex(function(element) {
@@ -121,7 +118,7 @@ document.onkeyup = function(event) {
                     document.getElementById("score").innerHTML = "<p>WINS: " + wins + "<br>LOSSES: " + losses + "</p>";
                     gameOver = true;
                 }
-            }       
+            }
         }
     }
 }
